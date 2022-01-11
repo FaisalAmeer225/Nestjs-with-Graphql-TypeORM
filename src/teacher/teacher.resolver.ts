@@ -112,8 +112,8 @@ export class TeacherResolver {
     return this.TeacherService.updateTeacherById(id, teacher);
   }
 
-  @ResolveField('students', returns =>[Student])
-  public async students(@Parent() parent: Teacher) {
+  @ResolveField('student', returns =>[Student])
+  public async student(@Parent() parent: Teacher) {
     const {rollNumber} = parent[0]
     return this.StudentService.getStudentById(rollNumber);
   }
