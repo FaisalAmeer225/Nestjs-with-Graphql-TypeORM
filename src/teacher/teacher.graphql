@@ -1,0 +1,39 @@
+type Teacher {
+  id: ID
+  firstName: String
+  lastName: String
+  email: String
+  role: [Role]
+  education: String!
+  student: [Student]
+  deleted: Boolean
+}
+enum Role {
+  admin
+  professor
+  serior_Professor
+  associate_Professor
+  junior_Professor
+  accounts_Officer
+}
+
+input TeacherInput {
+  id: String
+  firstName: String
+  lastName: String
+  email: String
+  role: [Role]
+  education: String!
+}
+
+type Query {
+  allTeachers(deleted: Boolean): [Teacher]
+  teachers(id: String!): Teacher
+  teacherByStudent(studentId: String!): Teacher
+}
+
+type Mutation {
+  createTeacher(input: TeacherInput): Teacher
+  deleteTeacher(id: String!): Boolean
+  updateTeacherRole(id: String, role: [Role]): Teacher
+}

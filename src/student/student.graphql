@@ -1,0 +1,63 @@
+type Student {
+  rollNumber: String
+  firstName: String
+  lastName: String
+  email: String
+  section: [Section]
+  education: Program
+  teachers: [Teacher]
+  deleted: Boolean
+}
+
+enum Program {
+  BBA
+  BSC
+  MBA
+  MSC
+  MBDS
+}
+
+enum Section {
+  A
+  B
+  C
+  D
+}
+input Teachers {
+  id: String
+  firstName: String
+  lastName: String
+  email: String
+  role: [Role]
+}
+
+input StudentInput {
+  rollNumber: String
+  firstName: String!
+  lastName: String!
+  email: String!
+  section: [Section]!
+  education: [Program]!
+  teachers: [Teachers]!
+}
+
+input UpdateStudent {
+  rollNumber: String
+  firstName: String
+  lastName: String
+  email: String
+  section: [Section]
+  education: [Program]
+  teacher: [Teachers]
+}
+
+type Query {
+  students(rollNumber: String!): Student
+  studentsByTeacherId(teacherId: String!): Student
+}
+
+type Mutation {
+  createStudent(input: StudentInput): Student
+  deleteStudent(rollNumber: String!): Boolean
+  updateStudentClass(input: UpdateStudent): Student
+}
