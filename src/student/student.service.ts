@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import{ Student } from './student.entity';
+import { Student } from './student.entity';
 import { TeacherService } from '../teacher/teacher.service';
 
 @Injectable()
 export class StudentService {
   constructor(
     @InjectRepository(Student) private readonly repo: Repository<Student>,
-    private readonly TeacherService: TeacherService
+    private readonly TeacherService: TeacherService,
   ) {}
 
   saveStudent(input: any) {
@@ -29,22 +29,21 @@ export class StudentService {
     return await this.saveStudent(rollnumber);
   }
 
-  deleteStudent(rollnumber: string){
-      return this.repo.delete(rollnumber);
+  deleteStudent(rollnumber: string) {
+    return this.repo.delete(rollnumber);
   }
-  public async studentsByTeacherId(id : string){
-    const Students = await this.TeacherService.getTeacherByStudentId(id)
-   const {rollNumber} =  Students.students[0]
-    return this.repo.findOne(rollNumber);
+  public async studentsByTeacherId(id: string) {
+    const Students = await this.TeacherService.getTeacherByStudentId(id);
+    console.log(Students);
+    return this.repo.findOne();
   }
 
-  public async existingStudent (email: string): Promise <Student| undefined>{
+  public async existingStudent(email: string): Promise<Student | undefined> {
     return this.repo.findOne({
-      where:{
-        email:`${email}`,
-        deleted: false
-      }
-    })
-
+      where: {
+        email: `${email}`,
+        deleted: false,
+      },
+    });
   }
 }

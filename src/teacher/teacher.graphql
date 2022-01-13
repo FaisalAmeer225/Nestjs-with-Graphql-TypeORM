@@ -5,7 +5,7 @@ type Teacher {
   email: String
   role: [Role]
   education: String!
-  student: [Student]
+  students: [Student]
   deleted: Boolean
 }
 enum Role {

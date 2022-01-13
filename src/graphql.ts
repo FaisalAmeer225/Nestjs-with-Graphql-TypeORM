@@ -103,7 +103,7 @@ export interface Teacher {
     email?: Nullable<string>;
     role?: Nullable<Nullable<Role>[]>;
     education: string;
-    student?: Nullable<Nullable<Student>[]>;
+    students?: Nullable<Nullable<Student>[]>;
     deleted?: Nullable<boolean>;
 }
 

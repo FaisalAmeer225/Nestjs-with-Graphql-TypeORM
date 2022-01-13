@@ -76,6 +76,7 @@ export class StudentResolver {
   }
   @ResolveField()
   public async teachers(@Parent() parent: Student) {
+    console.log(parent)
     return parent.teachers?.map(({ id }) =>
       this.teacherService.getTeacherById(id),
     );

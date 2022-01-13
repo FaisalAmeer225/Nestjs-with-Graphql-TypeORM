@@ -26,16 +26,16 @@ export class TeacherResolver {
       ? await this.TeacherService.allTeachers()
       : await this.TeacherService.allTeachers();
     console.log(teacher);
-
-    if (teacher[0].students) {
-      const std = await this.StudentService.getStudentById(
-        teacher[0].students[0].rollNumber,
-      );
-      console.log(std);
-      return teacher;
-    } else {
-      return new Error('no students found');
-    }
+    return teacher;
+    // if (teacher[0].students || null) {
+    //   const std = await this.StudentService.getStudentById(
+    //     teacher[0].students[0].rollNumber,
+    //   );
+    //   console.log(std);
+    //   return teacher;
+    // } else {
+    //   return new Error('no students found');
+    // }
 
     // const teachers = !deleted
     //   ? await this.TeacherService.allTeachers()
@@ -83,8 +83,8 @@ export class TeacherResolver {
   }
 
   @Query()
-  teacherByStudent(@Args('id') id: string) {
-    return this.TeacherService.getTeacherByStudentId(id);
+  teacherByStudent(@Args('rollnumber') rollNumber: string) {
+    return this.TeacherService.getTeacherByStudentId(rollNumber);
   }
 
   @Mutation()
@@ -112,9 +112,11 @@ export class TeacherResolver {
     return this.TeacherService.updateTeacherById(id, teacher);
   }
 
-  @ResolveField('student', returns =>[Student])
-  public async student(@Parent() parent: Teacher) {
-    const {rollNumber} = parent[0]
-    return this.StudentService.getStudentById(rollNumber);
+  @ResolveField()
+  public async students(@Parent() parent: Teacher) {
+    const student = parent.students.map(({rollNumber})=>
+     this.StudentService.getStudentById(rollNumber)
+    );
+    return student;
   }
 }

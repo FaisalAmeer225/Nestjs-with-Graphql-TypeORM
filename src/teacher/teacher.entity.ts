@@ -5,6 +5,7 @@ import {
   Index,
   PrimaryGeneratedColumn,
   JoinTable,
+  OneToOne,
   ManyToMany,
   Generated,
   OneToMany,
@@ -37,9 +38,9 @@ export class Teacher {
   @Column({ type: 'text', nullable: false })
   education: string;
 
-  
-  // @OneToMany(()=>Student, (student)=> student.rollNumber)
-  // studentRollNumber:string
+  // @OneToOne(() => Student, (student) => student.teachers)
+  // @JoinTable()
+  // students: Student[];
 
   @ManyToMany(() => Student, (student) => student.teachers)
   students: Student[];
