@@ -22,11 +22,15 @@ export class TeacherResolver {
 
   @Query()
   async allTeachers(@Args('deleted') deleted: boolean) {
-    const teacher = !deleted
+    const teachers = !deleted
       ? await this.TeacherService.allTeachers()
       : await this.TeacherService.allTeachers();
-    console.log(teacher);
-    return teacher;
+    console.log(teachers);
+
+    const [{rollNumber}] = teachers[0].students
+    console.log(rollNumber);
+   await this.StudentService.getStudentById(rollNumber);
+return teachers;
     // if (teacher[0].students || null) {
     //   const std = await this.StudentService.getStudentById(
     //     teacher[0].students[0].rollNumber,
@@ -54,15 +58,16 @@ export class TeacherResolver {
     //     .map(async (teacher) => {
     //       if (!teacher) throw Error('Teacher does not exist');
 
-    //       const { students } = teacher;
+    //       const { students } = teacher[0];
 
-    //       teacher[0].studentRollNumber = (
+    //       const { rollNumber } = students;
+    //       teacher[0].students = (
     //         await Promise.all(
     //           students.map(async (student) => {
     //             const studentss = await this.StudentService.getStudentById(
-    //               teacher.studentRollNumber,
+    //               rollNumber,
     //             );
-    //             console.log('studentss', studentss);
+    //             console.log('studentss');
     //             if (studentss) return student;
 
     //             return null;
@@ -114,8 +119,8 @@ export class TeacherResolver {
 
   @ResolveField()
   public async students(@Parent() parent: Teacher) {
-    const student = parent.students.map(({rollNumber})=>
-     this.StudentService.getStudentById(rollNumber)
+    const student = parent.students.map(({ rollNumber }) =>
+      this.StudentService.getStudentById(rollNumber),
     );
     return student;
   }

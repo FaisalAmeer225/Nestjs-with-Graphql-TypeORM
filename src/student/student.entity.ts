@@ -40,13 +40,11 @@ export class Student {
   @Column({ type: 'text', array: true, nullable: false })
   section: string[];
 
-  @ManyToMany(() => Teacher, (teacher) => teacher.students, {
-    eager: true,
-    cascade: true,
-  })
+  @ManyToMany(() => Teacher, (teacher) => teacher.students)
   @JoinTable()
   teachers: Teacher[];
 
   // @OneToMany(() => Teacher, (eta) => eta.students)
+  // @JoinTable()
   // Teacher: Promise<Student>;
 }

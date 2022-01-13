@@ -9,6 +9,7 @@ import {
   ManyToMany,
   Generated,
   OneToMany,
+  ManyToOne,
 } from 'typeorm';
 
 @Entity('teacher')
@@ -38,10 +39,15 @@ export class Teacher {
   @Column({ type: 'text', nullable: false })
   education: string;
 
-  // @OneToOne(() => Student, (student) => student.teachers)
-  // @JoinTable()
-  // students: Student[];
+  @Column({ type: 'uuid', nullable: true })
+  studentsRollNumber: string;
 
-  @ManyToMany(() => Student, (student) => student.teachers)
+  // @ManyToOne(() => Student, (student) => student.Teacher)
+  // student: Student[];
+
+  @ManyToMany(() => Student, (student) => student.teachers, {
+    eager: true,
+    cascade: true,
+  })
   students: Student[];
 }

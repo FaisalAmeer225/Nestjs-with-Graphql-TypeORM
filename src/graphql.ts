@@ -105,6 +105,7 @@ export interface Teacher {
     education: string;
     students?: Nullable<Nullable<Student>[]>;
     deleted?: Nullable<boolean>;
+    studentsRollNumber?: Nullable<string>;
 }
 
 type Nullable<T> = T | null;
