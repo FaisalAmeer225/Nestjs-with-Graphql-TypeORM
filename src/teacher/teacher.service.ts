@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { getConnection, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Teacher } from './teacher.entity';
 import { Teachers } from '../graphql';
@@ -11,9 +11,9 @@ export class TeacherService {
   ) {}
   allTeachers() {
     return this.repo.find({
-      where:{
-        deleted: false
-      }
+      where: {
+        deleted: false,
+      },
     });
   }
   saveTeacher(input: any) {
@@ -21,7 +21,9 @@ export class TeacherService {
   }
 
   getTeacherByStudentId(StudentId: string) {
-    return this.repo.findOne(StudentId);
+    return getConnection().query(
+      `SELECT * FROM public.student_teachers_teacher st, public.teacher t WHERE st."teacherId" = t.id AND st."studentRollNumber" = '${StudentId}'`,
+    );
   }
 
   getTeacherById(id: string) {

@@ -35,7 +35,8 @@ export class StudentService {
   public async studentsByTeacherId(id: string) {
     const Students = await this.TeacherService.getTeacherByStudentId(id);
     console.log(Students);
-    const [{rollNumber}] = Students.students
+    // @ts-ignore
+    const [{ rollNumber }] = Students.students;
     console.log(rollNumber);
     return this.repo.findOne(rollNumber);
   }

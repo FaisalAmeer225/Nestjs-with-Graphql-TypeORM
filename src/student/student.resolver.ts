@@ -24,7 +24,7 @@ export class StudentResolver {
     const existingStudent = await this.StudentService.getStudentById(
       rollNumber,
     );
-    if (!rollNumber) {
+    if (!existingStudent) {
       throw new Error('Please provide the correct rollNumber');
     } else {
       return existingStudent;
@@ -76,9 +76,6 @@ export class StudentResolver {
   }
   @ResolveField()
   public async teachers(@Parent() parent: Student) {
-    console.log(parent)
-    return parent.teachers?.map(({ id }) =>
-      this.teacherService.getTeacherById(id),
-    );
+    return this.teacherService.getTeacherByStudentId(parent.rollNumber);
   }
 }
