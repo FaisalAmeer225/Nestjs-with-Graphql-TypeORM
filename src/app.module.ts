@@ -7,6 +7,9 @@ import { join } from 'path';
 import { StudentModule } from './student/student.module';
 import { TeacherModule } from './teacher/teacher.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { RedisModule } from './RedisModule/Redis/redis.module';
+import { SocketStateModule } from './RedisModule/socket-state/socket-state.module';
+import { RedisMainModule } from './RedisModule/redisMain.module';
 
 @Module({
   imports: [
@@ -37,6 +40,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
     StudentModule,
     TeacherModule,
+    RedisMainModule,
   ],
   controllers: [AppController],
   providers: [AppService],
