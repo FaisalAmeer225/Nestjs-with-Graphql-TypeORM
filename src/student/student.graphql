@@ -61,3 +61,7 @@ type Mutation {
   deleteStudent(rollNumber: String!): Boolean
   updateStudentClass(input: UpdateStudent): Student
 }
+
+type Subscription {
+  newStudent: Student
+}

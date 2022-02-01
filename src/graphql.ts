@@ -96,6 +96,10 @@ export interface IMutation {
     updateTeacherRole(id?: Nullable<string>, role?: Nullable<Nullable<Role>[]>): Nullable<Teacher> | Promise<Nullable<Teacher>>;
 }
 
+export interface ISubscription {
+    newStudent(): Nullable<Student> | Promise<Nullable<Student>>;
+}
+
 export interface Teacher {
     id?: Nullable<string>;
     firstName?: Nullable<string>;

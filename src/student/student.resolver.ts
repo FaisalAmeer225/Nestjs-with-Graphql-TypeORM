@@ -5,18 +5,29 @@ import {
   Args,
   ResolveField,
   Parent,
+  Subscription,
 } from '@nestjs/graphql';
 import { StudentInput } from '../graphql';
-import { Teacher } from '../teacher/teacher.entity';
 import { Student } from './student.entity';
 import { StudentService } from './student.service';
 import { TeacherService } from '../teacher/teacher.service';
+import { RedisService } from 'src/RedisModule/Redis/redis.service';
+import { PUB_SUB } from 'src/pubsub/pubsub.module';
+import { RedisPubSub } from 'graphql-redis-subscriptions';
+import { Inject } from '@nestjs/common';
+
+enum SUBSCRIPTION_EVENTS {
+  newStudent = 'newStudent',
+}
 
 @Resolver('Student')
 export class StudentResolver {
+  allSubscribers: Student[] = [];
+
   constructor(
     private readonly StudentService: StudentService,
     private readonly teacherService: TeacherService,
+    @Inject(PUB_SUB) private readonly pubSub: RedisPubSub,
   ) {}
 
   @Query()
@@ -45,6 +56,10 @@ export class StudentResolver {
         return this.teacherService.getTeacherById(id);
       }),
     );
+    this.allSubscribers.push(students);
+    this.pubSub.publish(SUBSCRIPTION_EVENTS.newStudent, {
+      newStudent: students,
+    });
     students.email = input.email;
     students.firstName = input.firstName;
     students.lastName = input.lastName;
@@ -64,7 +79,10 @@ export class StudentResolver {
       return student;
     }
   }
-
+  @Subscription()
+  newStudent() {
+    return this.pubSub.asyncIterator(SUBSCRIPTION_EVENTS.newStudent);
+  }
   @Mutation()
   updateStudentClass(@Args('input') input) {
     return this.StudentService.saveStudent(input);

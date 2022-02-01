@@ -6,22 +6,25 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { StudentModule } from './student/student.module';
 import { TeacherModule } from './teacher/teacher.module';
+//import { RedisMainModule } from './RedisModule/redisMain.module';
+import { PubsubModule } from './pubsub/pubsub.module';
+import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { RedisModule } from './RedisModule/Redis/redis.module';
-import { SocketStateModule } from './RedisModule/socket-state/socket-state.module';
-import { RedisMainModule } from './RedisModule/redisMain.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: './env',
+    }),
+
     TypeOrmModule.forRoot({
       type: 'postgres',
-
       host: 'localhost',
       port: 5432,
-      username: 'comberry',
-      password: 'comberry',
+      username: 'postgres',
+      password: '2@allinall',
       database: 'postgres',
-
       entities: [join(__dirname, '**', '*.entity.{ts,js}')],
       // entities: ['dist/**/*.entity.js'],
 
@@ -34,13 +37,23 @@ import { RedisMainModule } from './RedisModule/redisMain.module';
       playground: true,
       introspection: true,
       typePaths: ['./**/*.graphql'],
+      // plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      // subscriptions: {
+      //   'graphql-ws': true,
+      // },
       definitions: {
         path: join(process.cwd(), 'src/graphql.ts'),
+      },
+
+      installSubscriptionHandlers: true,
+      subscriptions: {
+        'graphql-ws': true,
       },
     }),
     StudentModule,
     TeacherModule,
-    RedisMainModule,
+    // RedisMainModule,
+    PubsubModule,
   ],
   controllers: [AppController],
   providers: [AppService],
