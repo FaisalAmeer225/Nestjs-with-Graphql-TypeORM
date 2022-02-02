@@ -1,9 +1,8 @@
 FROM node:14
 
-WORKDIR /app
+WORKDIR /src
 
 COPY package.json .
-COPY yarn.lock .
 
 RUN yarn install
 
