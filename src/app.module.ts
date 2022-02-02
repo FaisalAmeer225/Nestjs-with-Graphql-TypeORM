@@ -7,7 +7,7 @@ import { join } from 'path';
 import { StudentModule } from './student/student.module';
 import { TeacherModule } from './teacher/teacher.module';
 import { RedisMainModule } from './RedisModule/redisMain.module';
-import { PubsubModule } from './pubsub/pubsub.module';
+//import { PubsubModule } from './pubsub/pubsub.module';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
@@ -53,7 +53,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     StudentModule,
     TeacherModule,
     RedisMainModule,
-    PubsubModule,
+    //PubsubModule,
   ],
   controllers: [AppController],
   providers: [AppService],

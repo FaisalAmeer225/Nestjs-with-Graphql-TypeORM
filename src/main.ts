@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-//import { Transport, MicroserviceOptions } from '@nestjs/microservices';
+import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 import { initAdapters } from './adapters.init';
 
 async function bootstrap(): Promise<void> {
@@ -8,8 +8,7 @@ async function bootstrap(): Promise<void> {
 
    initAdapters(app);
 
-  await app.listen(4000);
-
+ 
   // const redis = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
   //   transport: Transport.REDIS,
   //   options: {
@@ -17,5 +16,9 @@ async function bootstrap(): Promise<void> {
   //   },
   // });
   // await redis.listen();
+
+  await app.listen(3000);
+
 }
+
 bootstrap();

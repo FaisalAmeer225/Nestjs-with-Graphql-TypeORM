@@ -12,7 +12,7 @@ import { Student } from './student.entity';
 import { StudentService } from './student.service';
 import { TeacherService } from '../teacher/teacher.service';
 import { RedisService } from 'src/RedisModule/Redis/redis.service';
-import { PUB_SUB } from 'src/pubsub/pubsub.module';
+//import { PUB_SUB } from 'src/pubsub/pubsub.module';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { Inject } from '@nestjs/common';
 
@@ -27,7 +27,7 @@ export class StudentResolver {
   constructor(
     private readonly StudentService: StudentService,
     private readonly teacherService: TeacherService,
-    @Inject(PUB_SUB) private readonly pubSub: RedisPubSub,
+    private readonly pubSub: RedisService,
   ) {}
 
   @Query()
@@ -81,7 +81,7 @@ export class StudentResolver {
   }
   @Subscription()
   newStudent() {
-    return this.pubSub.asyncIterator(SUBSCRIPTION_EVENTS.newStudent);
+    return this.pubSub.publish('SUBSCRIPTION_EVENTS', '');
   }
   @Mutation()
   updateStudentClass(@Args('input') input) {
